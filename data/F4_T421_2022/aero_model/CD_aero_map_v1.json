@@ -1,0 +1,110 @@
+{
+  "vehicle": "F4_T421_2022",
+
+  "CD_standard": 0.5,
+
+  "models": {
+
+    "with_gurney": {
+
+      "CD_wing_model": {
+        "description": "Modelo de Drag CD en función de FW y RW con gurney instalado.",
+        "variables": {
+          "fw": { "unit": "deg", "range": [3, 7] },
+          "rw": { "unit": "deg", "range": [2, 21] }
+        },
+        "coefficients": [
+          0.858510401,
+          0.00894724311,
+          0.00719511278,
+          -0.000000626566416,
+          -0.0000500000000,
+          -0.00000827067669
+        ],
+        "powers": [
+          { "fw": 0, "rw": 0 },
+          { "fw": 1, "rw": 0 },
+          { "fw": 0, "rw": 1 },
+          { "fw": 2, "rw": 0 },
+          { "fw": 0, "rw": 2 },
+          { "fw": 1, "rw": 1 }
+        ]
+      },
+
+      "CD_height_model": {
+        "description": "Modelo de Drag CD en función de FRH y RRH con gurney instalado.",
+        "variables": {
+          "frh": { "unit": "mm", "range": [20, 75] },
+          "rrh": { "unit": "mm", "range": [5, 25] }
+        },
+        "coefficients": [
+          1.00222868,
+          -0.00124307612,
+          0.000468277711,
+          0.000000218592788,
+          0.00000000402767337,
+          -0.0000000656681953
+        ],
+        "powers": [
+          { "frh": 0, "rrh": 0 },
+          { "frh": 1, "rrh": 0 },
+          { "frh": 0, "rrh": 1 },
+          { "frh": 2, "rrh": 0 },
+          { "frh": 0, "rrh": 2 },
+          { "frh": 1, "rrh": 1 }
+        ]
+      }
+    },
+
+    "without_gurney": {
+
+      "CD_wing_model": {
+        "description": "Modelo de Drag CD en función de FW y RW sin gurney.",
+        "variables": {
+          "fw": { "unit": "deg", "range": [3, 7] },
+          "rw": { "unit": "deg", "range": [2, 21] }
+        },
+        "coefficients": [
+          0.832915163,
+          0.0082986975,
+          0.0109890977,
+          -0.00000362649,
+          -0.00045,
+          0.0000661654
+        ],
+        "powers": [
+          { "fw": 0, "rw": 0 },
+          { "fw": 1, "rw": 0 },
+          { "fw": 0, "rw": 1 },
+          { "fw": 2, "rw": 0 },
+          { "fw": 0, "rw": 2 },
+          { "fw": 1, "rw": 1 }
+        ]
+      },
+
+      "CD_height_model": {
+        "description": "Modelo de Drag CD en función de FRH y RRH sin gurney.",
+        "variables": {
+          "frh": { "unit": "mm", "range": [20, 75] },
+          "rrh": { "unit": "mm", "range": [5, 25] }
+        },
+        "coefficients": [
+          0.980862016,
+          -0.00124307612,
+          0.000468277711,
+          0.000000218592788,
+          0.00000000402767337,
+          -0.0000000656681953
+        ],
+        "powers": [
+          { "frh": 0, "rrh": 0 },
+          { "frh": 1, "rrh": 0 },
+          { "frh": 0, "rrh": 1 },
+          { "frh": 2, "rrh": 0 },
+          { "frh": 0, "rrh": 2 },
+          { "frh": 1, "rrh": 1 }
+        ]
+      }
+    }
+  }
+}
