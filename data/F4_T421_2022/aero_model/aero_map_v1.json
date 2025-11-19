@@ -1,0 +1,110 @@
+{
+  "vehicle": "F4_T421_2022",
+
+  "CL_standard": 1.2,
+
+  "models": {
+
+    "with_gurney": {
+
+      "CL_wing_model": {
+        "description": "Modelo FW/RW con gurney instalado.",
+        "variables": {
+          "fw": { "unit": "deg", "range": [3, 7] },
+          "rw": { "unit": "deg", "range": [2, 21] }
+        },
+        "coefficients": [
+          0.6908977600,
+          0.0416055451,
+          0.0177454261,
+          -0.0030312500,
+          0.0000016917,
+          -0.0002481203
+        ],
+        "powers": [
+          { "fw": 0, "rw": 0 },
+          { "fw": 1, "rw": 0 },
+          { "fw": 0, "rw": 1 },
+          { "fw": 2, "rw": 0 },
+          { "fw": 1, "rw": 1 },
+          { "fw": 0, "rw": 2 }
+        ]
+      },
+
+      "CL_height_model": {
+        "description": "Modelo FRH/RRH con gurney instalado.",
+        "variables": {
+          "frh": { "unit": "mm", "range": [20, 75] },
+          "rrh": { "unit": "mm", "range": [5, 25] }
+        },
+        "coefficients": [
+          1.18132818,
+          -0.0163581624,
+          0.00182714452,
+          -0.000000847796551,
+          0.000000153918728,
+          0.000000177264984
+        ],
+        "powers": [
+          { "frh": 0, "rrh": 0 },
+          { "frh": 1, "rrh": 0 },
+          { "frh": 0, "rrh": 1 },
+          { "frh": 2, "rrh": 0 },
+          { "frh": 0, "rrh": 2 },
+          { "frh": 1, "rrh": 1 }
+        ]
+      }
+    },
+
+    "without_gurney": {
+
+      "CL_wing_model": {
+        "description": "Modelo FW/RW sin gurney.",
+        "variables": {
+          "fw": { "unit": "deg", "range": [3, 7] },
+          "rw": { "unit": "deg", "range": [2, 21] }
+        },
+        "coefficients": [
+          0.685610855,
+          0.0149377098,
+          0.0146262218,
+          -0.000220019746,
+          -0.00035625,
+          0.000152067669
+        ],
+        "powers": [
+          { "fw": 0, "rw": 0 },
+          { "fw": 1, "rw": 0 },
+          { "fw": 0, "rw": 1 },
+          { "fw": 2, "rw": 0 },
+          { "fw": 0, "rw": 2 },
+          { "fw": 1, "rw": 1 }
+        ]
+      },
+
+      "CL_height_model": {
+        "description": "Modelo FRH/RRH sin gurney.",
+        "variables": {
+          "frh": { "unit": "mm", "range": [20, 75] },
+          "rrh": { "unit": "mm", "range": [5, 25] }
+        },
+        "coefficients": [
+          1.09614484,
+          -0.0163581624,
+          0.00182714452,
+          -0.000000847796551,
+          0.000000153918728,
+          0.000000177264984
+        ],
+        "powers": [
+          { "frh": 0, "rrh": 0 },
+          { "frh": 1, "rrh": 0 },
+          { "frh": 0, "rrh": 1 },
+          { "frh": 2, "rrh": 0 },
+          { "frh": 0, "rrh": 2 },
+          { "frh": 1, "rrh": 1 }
+        ]
+      }
+    }
+  }
+}
