@@ -34,8 +34,8 @@
       "AB_height_model": {
         "description": "Modelo de Aero Balance (AB) en función de FRH y RRH con gurney instalado.",
         "variables": {
-          "frh": { "unit": "mm", "range": [20, 75] },
-          "rrh": { "unit": "mm", "range": [5, 25] }
+          "frh": { "unit": "mm", "range": [5, 25] },
+          "rrh": { "unit": "mm", "range": [20, 75] }
         },
         "coefficients": [
           -0.0677565097,
@@ -85,8 +85,8 @@
       "AB_height_model": {
         "description": "Modelo de Aero Balance (AB) en función de FRH y RRH sin gurney.",
         "variables": {
-          "frh": { "unit": "mm", "range": [20, 75] },
-          "rrh": { "unit": "mm", "range": [5, 25] }
+          "frh": { "unit": "mm", "range": [5, 25] },
+          "rrh": { "unit": "mm", "range": [20, 75] }
         },
         "coefficients": [
           -0.378539843,

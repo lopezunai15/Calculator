@@ -34,8 +34,8 @@
       "CL_height_model": {
         "description": "Modelo FRH/RRH con gurney instalado.",
         "variables": {
-          "frh": { "unit": "mm", "range": [20, 75] },
-          "rrh": { "unit": "mm", "range": [5, 25] }
+          "frh": { "unit": "mm", "range": [5, 25] },
+          "rrh": { "unit": "mm", "range": [20, 75] }
         },
         "coefficients": [
           1.18132818,
@@ -85,8 +85,8 @@
       "CL_height_model": {
         "description": "Modelo FRH/RRH sin gurney.",
         "variables": {
-          "frh": { "unit": "mm", "range": [20, 75] },
-          "rrh": { "unit": "mm", "range": [5, 25] }
+          "frh": { "unit": "mm", "range": [5, 25] },
+          "rrh": { "unit": "mm", "range": [20, 75] }
         },
         "coefficients": [
           1.09614484,
