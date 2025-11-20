@@ -121,4 +121,4 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 
-"""Console input: python tests/test_aero_maps.py --fw 5 --rw 10 --frh 40 --rrh 15 --gurney """
+"""Console input: python tests/test_aero_maps.py --fw 5 --rw 10 --frh 15 --rrh 30 --gurney """
