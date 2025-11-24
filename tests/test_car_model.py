@@ -1,3 +1,4 @@
+import math
 import sys
 from pathlib import Path
 
@@ -13,8 +14,13 @@ from core.car_model import (
     compute_force_by_speed,
     compute_power_by_speed,
     compute_total_gear_ratios,
+    compute_shift_rpms,
+    force_plot_html,
     load_engine_map,
     plot_force_by_speed,
+    _speed_from_engine_rpm,
+    RPM_LIMIT,
+    select_best_gear_by_speed,
 )
 
 
@@ -98,3 +104,83 @@ def test_plot_force_by_speed_creates_figure_with_lines():
     assert ax.get_title() == "Test Force Curve"
     # One line per gear
     assert len(ax.get_lines()) == 6
+
+
+def test_force_plot_html_contains_embedded_image():
+    matplotlib = pytest.importorskip("matplotlib")
+    matplotlib.use("Agg")
+
+    engine_map = load_engine_map()
+    force_by_gear = compute_force_by_speed(engine_map, min_speed_kmh=10, max_speed_kmh=20)
+
+    html = force_plot_html(force_by_gear, title="HTML Force Curve")
+
+    assert "<html>" in html
+    assert "HTML Force Curve" in html
+    assert "data:image/png;base64" in html
+    assert "<img" in html
+
+
+def test_select_best_gear_by_speed_picks_max_force():
+    engine_map = load_engine_map()
+    force_by_gear = compute_force_by_speed(engine_map, min_speed_kmh=10, max_speed_kmh=120, step_kmh=10)
+
+    best_gears = select_best_gear_by_speed(
+        engine_map, min_speed_kmh=10, max_speed_kmh=120, step_kmh=10
+    )
+
+    # Ensure every speed step has a best gear
+    assert [speed for speed, _ in best_gears] == list(range(10, 121, 10))
+
+    # Validate against a manual argmax of the force curves
+    expected = []
+    for speed_kmh in range(10, 121, 10):
+        best_gear = max(
+            force_by_gear.items(),
+            key=lambda item: dict(item[1])[speed_kmh],
+        )[0]
+        expected.append((speed_kmh, best_gear))
+
+    assert best_gears == expected
+
+
+def test_select_best_gear_stops_at_top_gear_limiter():
+    engine_map = load_engine_map()
+    ratios = compute_total_gear_ratios(engine_map)
+    top_gear = max(ratios)
+    limiter_speed = _speed_from_engine_rpm(RPM_LIMIT, ratios[top_gear], 0.287)
+    expected_max_speed = min(300, int(math.floor(limiter_speed)))
+
+    best_gears = select_best_gear_by_speed(
+        engine_map, min_speed_kmh=1, max_speed_kmh=300, step_kmh=1
+    )
+
+    assert best_gears[0][0] == 1
+    assert best_gears[-1][0] == expected_max_speed
+    assert [speed for speed, _ in best_gears] == list(range(1, expected_max_speed + 1))
+    assert best_gears[-1][1] == top_gear
+
+
+def test_compute_shift_rpms_identifies_crossover_points():
+    engine_map = load_engine_map()
+
+    shift_points = compute_shift_rpms(
+        engine_map, min_speed_kmh=1, max_speed_kmh=220, step_kmh=1
+    )
+
+    expected = [
+        (1, 2, 86, 6100),
+        (2, 3, 114, 6100),
+        (3, 4, 141, 6059.81),
+        (4, 5, 169, 6052.65),
+        (5, 6, 203, 6048.92),
+    ]
+
+    # Validate shift sequence and crossover speeds
+    assert [(f, t, s) for f, t, s, _ in shift_points] == [
+        (f, t, s) for f, t, s, _ in expected
+    ]
+
+    # Check RPM values with a generous tolerance to allow for interpolation differences
+    for (_, _, _, rpm), (_, _, _, expected_rpm) in zip(shift_points, expected):
+        assert rpm == pytest.approx(expected_rpm, rel=1e-4)
