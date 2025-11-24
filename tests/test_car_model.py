@@ -130,7 +130,7 @@ def test_select_best_gear_by_speed_picks_max_force():
     )
 
     # Ensure every speed step has a best gear
-    assert [speed for speed, _ in best_gears] == list(range(10, 121, 10))
+    assert [speed for speed, _, _ in best_gears] == list(range(10, 121, 10))
 
     # Validate against a manual argmax of the force curves
     expected = []
@@ -139,7 +139,8 @@ def test_select_best_gear_by_speed_picks_max_force():
             force_by_gear.items(),
             key=lambda item: dict(item[1])[speed_kmh],
         )[0]
-        expected.append((speed_kmh, best_gear))
+        best_force = dict(force_by_gear[best_gear])[speed_kmh]
+        expected.append((speed_kmh, best_gear, best_force))
 
     assert best_gears == expected
 
@@ -157,7 +158,9 @@ def test_select_best_gear_stops_at_top_gear_limiter():
 
     assert best_gears[0][0] == 1
     assert best_gears[-1][0] == expected_max_speed
-    assert [speed for speed, _ in best_gears] == list(range(1, expected_max_speed + 1))
+    assert [speed for speed, _, _ in best_gears] == list(
+        range(1, expected_max_speed + 1)
+    )
     assert best_gears[-1][1] == top_gear
 
 

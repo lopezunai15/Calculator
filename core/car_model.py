@@ -251,8 +251,8 @@ def select_best_gear_by_speed(
     min_speed_kmh: int = 1,
     max_speed_kmh: int = 300,
     step_kmh: int = 1,
-) -> List[Tuple[int, int]]:
-    """Pick the gear that delivers the most force for each speed step.
+) -> List[Tuple[int, int, float]]:
+    """Pick the gear and force that deliver the most tractive effort per speed step.
 
     Parameters
     ----------
@@ -266,11 +266,12 @@ def select_best_gear_by_speed(
 
     Returns
     -------
-    List[Tuple[int, int]]
-        List of ``(speed_kmh, best_gear)`` pairs, where the gear is chosen by
-        maximizing tractive force. Ties are broken by selecting the lowest gear
-        number. The scan halts at the speed where top gear reaches the engine
-        limiter to avoid producing unrealistic higher-speed samples.
+    List[Tuple[int, int, float]]
+        List of ``(speed_kmh, best_gear, best_force_newtons)`` tuples, where the
+        gear is chosen by maximizing tractive force. Ties are broken by
+        selecting the lowest gear number. The scan halts at the speed where top
+        gear reaches the engine limiter to avoid producing unrealistic
+        higher-speed samples.
     """
 
     ratios = compute_total_gear_ratios(engine_map)
@@ -293,7 +294,7 @@ def select_best_gear_by_speed(
         step_kmh=step_kmh,
     )
 
-    best_gears: List[Tuple[int, int]] = []
+    best_gears: List[Tuple[int, int, float]] = []
     speeds = range(min_speed_kmh, max_scan_speed + 1, step_kmh)
     force_lookup = {gear: dict(samples) for gear, samples in force_by_gear.items()}
 
@@ -315,7 +316,7 @@ def select_best_gear_by_speed(
                 f"Failed to determine best gear for speed {speed_kmh} km/h"
             )
 
-        best_gears.append((speed_kmh, best_gear))
+        best_gears.append((speed_kmh, best_gear, best_force))
 
     return best_gears
 
@@ -516,9 +517,9 @@ if __name__ == "__main__":
     fig.show()
 
     best_gears = select_best_gear_by_speed(engine_map)
-    print("Marcha óptima por velocidad (km/h -> marcha):")
-    for speed, gear in best_gears:
-        print(f"{speed:3d} -> {gear}")
+    print("Marcha óptima por velocidad (km/h -> marcha, fuerza):")
+    for speed, gear, force in best_gears:
+        print(f"{speed:3d} -> {gear} ({force:.1f} N)")
 
     shift_points = compute_shift_rpms(engine_map)
     print("\nPuntos de cambio de marcha (velocidad, rpm):")
